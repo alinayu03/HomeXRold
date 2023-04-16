@@ -1,0 +1,29 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+[RequireComponent(typeof(AudioSource))]
+public class VoiceJournal : MonoBehaviour
+{
+    public Button recordButton;
+    public Button playbackButton;
+    private AudioSource audioSource;
+    private AudioClip recordedClip;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        recordButton.onClick.AddListener(StartRecording);
+        playbackButton.onClick.AddListener(PlayRecording);
+    }
+
+    void StartRecording()
+    {
+        recordedClip = Microphone.Start(null, false, 10, 44100);
+    }
+
+    void PlayRecording()
+    {
+        audioSource.clip = recordedClip;
+        audioSource.Play();
+    }
+}
