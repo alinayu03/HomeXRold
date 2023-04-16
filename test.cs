@@ -13,7 +13,7 @@ public class LoadAssetBundlesRemote2 : MonoBehaviour
  
     IEnumerator DownloadAsset()
     {
-        using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(" The correct private google drive url"))
+        using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle("https://drive.google.com/uc?export=download&id=17mV2iUa9D9-bAyZbZcqkZYPQnpq6nkYL"))
      
         {
             yield return uwr.SendWebRequest();
