@@ -1,0 +1,54 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.IO;
+
+public class VoiceJournalButton : MonoBehaviour
+{
+    public AudioRecorder audioRecorder;
+    public int maxRecordingTime = 30;
+    public Button button;
+
+    private bool isRecording = false;
+    private float elapsedRecordingTime = 0f;
+    private AudioClip recordedClip;
+
+    void Start()
+    {
+        button.onClick.AddListener(OnButtonClicked);
+    }
+
+    void Update()
+    {
+        if (isRecording)
+        {
+            elapsedRecordingTime += Time.deltaTime;
+            if (elapsedRecordingTime >= maxRecordingTime)
+            {
+                StopRecording();
+            }
+        }
+    }
+
+    public void OnButtonClicked()
+    {
+        if (!isRecording)
+        {
+            recordedClip = Microphone.Start(null, true, maxRecordingTime, AudioSettings.outputSampleRate);
+            isRecording = true;
+        }
+    }
+
+    public void StopRecording()
+    {
+        isRecording = false;
+        Microphone.End(null);
+        SaveClipToFile();
+    }
+
+    private void SaveClipToFile()
+    {
+        string filePath = Application.persistentDataPath + "/voicejournal.wav";
+        SavWav.Save(filePath, recordedClip);
+        Debug.Log("Voice journal saved to " + filePath);
+    }
+}
